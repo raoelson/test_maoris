@@ -1,0 +1,252 @@
+<?php
+
+namespace Test\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Test\AppBundle\Entity\User;
+
+/**
+ * Type
+ *
+ * @ORM\Table(name="type")
+ * @ORM\Entity(repositoryClass="Test\AppBundle\Repository\TypeRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Type {
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=32)
+     */
+    private $nom;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="age", type="integer")
+     */
+    private $age;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="famille", type="string", length=30)
+     */
+    private $famille;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="race", type="string", length=10)
+     */
+    private $race;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nourriture", type="string", length=20)
+     */
+    private $nourriture;
+
+    /**
+     * @var ArrayCollection User $users
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="types", cascade={"persist", "merge"})
+     * @ORM\JoinTable(name="liste_ami",
+     *  joinColumns={@ORM\JoinColumn(name="type_id", referencedColumnName="id")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     */
+    private $users;
+
+    public function __construct() {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Type
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set age
+     *
+     * @param integer $age
+     *
+     * @return Type
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * Get age
+     *
+     * @return integer
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+
+    /**
+     * Set famille
+     *
+     * @param string $famille
+     *
+     * @return Type
+     */
+    public function setFamille($famille)
+    {
+        $this->famille = $famille;
+
+        return $this;
+    }
+
+    /**
+     * Get famille
+     *
+     * @return string
+     */
+    public function getFamille()
+    {
+        return $this->famille;
+    }
+
+    /**
+     * Set race
+     *
+     * @param string $race
+     *
+     * @return Type
+     */
+    public function setRace($race)
+    {
+        $this->race = $race;
+
+        return $this;
+    }
+
+    /**
+     * Get race
+     *
+     * @return string
+     */
+    public function getRace()
+    {
+        return $this->race;
+    }
+
+    /**
+     * Set nourriture
+     *
+     * @param string $nourriture
+     *
+     * @return Type
+     */
+    public function setNourriture($nourriture)
+    {
+        $this->nourriture = $nourriture;
+
+        return $this;
+    }
+
+    /**
+     * Get nourriture
+     *
+     * @return string
+     */
+    public function getNourriture()
+    {
+        return $this->nourriture;
+    }
+
+    /**
+     * Add user
+     *
+     * @param \Test\AppBundle\Entity\User $user
+     *
+     * @return Type
+     */
+    public function addUser(\Test\AppBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+    public function setUser($users)
+    {
+        if ($users instanceof ArrayCollection || is_array($users)) {
+            foreach ($users as $user) {
+                $this->addUser($user);
+            }
+        }
+        else if ($users instanceof User) {
+            $this->addUser($users);
+        }
+        else {
+            throw new Exception("$users doit être une instance de CategorieAppel ou ArrayCollection");
+        }
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \Test\AppBundle\Entity\User $user
+     */
+    public function removeUser(\Test\AppBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+}

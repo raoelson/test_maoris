@@ -1,0 +1,101 @@
+{% extends '::front.html.twig' %}
+{% block title %}{{ parent() }} | Insectes{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/test/css/style.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/test/css/insect.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/select2/select2.css') }}" type="text/css" />
+{% endblock %}
+
+{% block contenu %}
+    <h1>
+        Liste des Insectes        
+    </h1>
+    <table class="table table-bordered table-condensed table-striped">
+        <thead>
+            <tr>
+                <th width="20%">INSECTES</th>
+                <th width="10%">TYPES</th>
+                <th width="15%">AGE</th>
+                <th width="15%">FAMILLE</th>
+                <th width="15%">RACE</th>
+                <th width="15%">NOURRITURE</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>   
+            <tr>
+                <td><input type="hidden" name="user" class="user" style="width: 100%;"/></td>
+                <td><input type="text" name="libelle" class="libelle form-control" style="width: 100%;" placeholder="Libellé du type d'insecte"  /></td>  
+                <td><input type="text" name="age" class="age form-control" style="width: 100%;" placeholder="Libellé d'age"  /></td>      
+                <td><input type="text" name="famille" class="famille form-control" style="width: 100%;" placeholder="Libellé de famille"  /></td>                
+                <td><input type="text" name="race" class="race form-control" style="width: 100%;" placeholder="Libellé de race"  /></td>                
+                <td><input type="text" name="nourriture" class="nourriture form-control" style="width: 100%;" placeholder="Libellé du nourriture"  /></td>                
+                <td>
+                    <button type="button" class="save btn btn-default btn-primary" title="Enregistrer">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+
+            {% for type in data%}
+                <tr id='tr_{{type.id}}'>                    
+                    <td>
+                        <input type="hdden" name="user" 
+                               class="user"
+                               style="width: 100%;" value="{{ type.usersNom }}" />
+                    </td>
+                    <td>
+                        <input type="hidden" name="id" class="id" value="{{ type.id }}" />
+                        <input type="text" name="libelle" class="libelle form-control" placeholder="TYPE" value="{{ type.nom }}" />
+                    </td>
+                    <td>                        
+                        <input type="text" name="age" class="age form-control" placeholder="Age" value="{{ type.age }}" />
+                    </td>
+                    <td>                        
+                        <input type="text" name="famille" class="famille form-control" placeholder="FAMILLE" value="{{ type.famille }}" />
+                    </td>
+                    <td>
+                        <input type="hidden" name="id" class="id" value="{{ type.id }}" />
+                        <input type="text" name="race" class="race form-control" placeholder="RACE" value="{{ type.race }}" />
+                    </td>
+                    <td>
+                        <input type="hidden" name="id" class="id" value="{{ type.id }}" />
+                        <input type="text" name="nourriture" class="nourriture form-control" placeholder="NOURRITURE" value="{{ type.nourriture }}" />
+                    </td>
+                    <td>
+                        <button type="button" class="edit btn btn-default" title="Modifier">
+                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="delete btn btn-default" title="Supprimer">
+                            <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucun Résultat</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var url_ajout_type_action = "{{ path("typeaction_ajouter") }}";
+        var url_redirect = "{{ path("index") }}";
+        var url_modification_type_action = "{{ path("typeaction_modifier",
+                                        {'idTypeAction': 'idTypeAction'}) }}";
+        var url_supprimer_type_action = "{{ path("typeaction_supprimer",
+                                        {'id': 'id'}) }}";
+        var dataTypes = [];
+        {% for libelle in users %}
+            dataTypes.push("{{ libelle }}");
+        {% endfor %}
+    </script>
+
+    <script src="{{ asset('bundles/select2/select2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/select2/select2_locale_fr.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/test/script.js') }}" type="text/javascript"></script>
+{% endblock %}
